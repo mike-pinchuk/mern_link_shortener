@@ -2,8 +2,6 @@ const { Router } = require("express");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
-const config = require("config");
-
 const User = require("../models/User");
 
 const router = Router();
@@ -71,7 +69,7 @@ router.post(
         return res.status(400).json({ message: "Wrong credentials" });
       }
 
-      const token = jwt.sign({ userId: user.id }, config.get("jwtSecret"), {
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
       res.json({ token, userId: user.id });
